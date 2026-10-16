@@ -42,6 +42,3 @@
 - 단위: `npm test` (node --test, 의존성 없음)
 - e2e: `node test/e2e/run.mjs` (Chromium + 가짜 LLM, 오프라인)
 - 수동: `docs/manual-test.md`
-
-## 문서
-현재 상태·이어서 작업 안내는 `NOTES.md`("현재 상태" 절) 한 곳에 둔다. 설계 `docs/superpowers/specs/`, 계획 `docs/superpowers/plans/`.
