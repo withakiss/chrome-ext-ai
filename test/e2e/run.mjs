@@ -95,6 +95,7 @@ function codingReply(msgs, q) {
     if (!last.startsWith('<file')) return call(id(), 'read_file', { path: 'src/api.js', start: 1, end: 3 });
     return call(id(), 'answer', { title: '검색 결과', summary: 'fetch는 src/api.js 2번째 줄에 있습니다.', blocks: [{ type: 'table', columns: ['파일', '내용'], rows: [['src/api.js', 'fetch 호출']] }, { type: 'chart', kind: 'bar', labels: ['a', 'b'], values: [1, 2] }], citations: [{ path: 'src/api.js', startLine: 1, endLine: 3 }, { path: 'src/other.js', startLine: 1, endLine: 1 }], followups: ['더 보기'] });
   }
+  if (q.endsWith('글자 도구')) return outs.length ? [{ content: `글자 도구 결과: ${outs.at(-1).trim()}` }] : [{ content: '확인할게요.\n<tool_call>\n<function=run_js>\n<parameter=code>\nconsole.log(\'ok-xml\')\n</parameter>\n</function>\n</tool_call>' }];
   if (q.endsWith('깨진 답')) return call(id(), 'answer', { summary: 5, blocks: 'x' });
   if (q.endsWith('다시 수정해')) return outs.length ? call(id(), 'answer', { summary: '수정안을 다시 만들었습니다.', blocks: [] }) : call(id(), 'propose_patch', { reason: 'v2를 v3로', edits: [{ path: 'src/api.js', oldText: 'v2', newText: 'v3' }] });
   if (q.endsWith('수정해')) return outs.length ? call(id(), 'answer', { summary: '수정안을 만들었습니다. 승인하면 적용됩니다.', blocks: [] }) : call(id(), 'propose_patch', { reason: 'v1을 v2로', edits: [{ path: 'src/api.js', oldText: 'v1', newText: 'v2' }] });
@@ -253,6 +254,9 @@ async function main() {
       checks.rich = !!rich && rich.title === '검색 결과' && rich.table === 2 && rich.chart === 2 && rich.cites.join() === 'api.js:1–3' && /other\.js:1 · 확인 안 됨/.test(rich.off.join()) && rich.follow >= 1;
       const searchOut = await evaluate(sid, `[...document.querySelectorAll('details.tool .out')].map((o) => o.textContent).join(' | ')`);
       checks.noSecret = !searchOut.includes('API_KEY=hidden');
+      await ask('글자 도구');
+      const xml = await evaluate(sid, `({ out: [...document.querySelectorAll('details.tool .out')].at(-1)?.textContent || '', raw: document.getElementById('messages').textContent.includes('<tool_call>'), ans: [...document.querySelectorAll('.msg.assistant')].at(-1)?.textContent || '' })`);
+      checks.textToolCall = /ok-xml/.test(xml.out) && !xml.raw && /글자 도구 결과: ok-xml/.test(xml.ans);
       await ask('깨진 답');
       checks.fallback = /형식 오류/.test(await evaluate(sid, `[...document.querySelectorAll('.rich-msg')].at(-1)?.textContent || ''`));
       await ask('수정해');

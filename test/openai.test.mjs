@@ -57,3 +57,21 @@ test('parses CRLF-delimited SSE', async () => {
   const r = await chatStream({ baseUrl: 'http://x/v1', model: 'm', messages: [], fetch: fakeFetch(body) });
   assert.equal(r.content, 'ok');
 });
+
+test('글자로 온 도구 호출(Qwen XML·JSON)을 도구 호출로 바꾸고 화면엔 흘리지 않음', async () => {
+  const { createAccumulator, parseTextToolCalls } = await import('../extension/lib/openai.js');
+  const xml = '페이지를 볼게요.\n<tool_call>\n<function=run_js>\n<parameter=code>\nconst s = await snapshot(page, { interactive: true });\nconsole.log(s.tree.slice(0, 3000));\n</parameter>\n</function>\n</tool_call>';
+  const acc = createAccumulator(); const shown = [];
+  for (const piece of xml.match(/[\s\S]{1,7}/g)) for (const d of acc.push({ choices: [{ delta: { content: piece } }] })) if (d.type === 'content') shown.push(d.text);
+  const r = acc.result();
+  assert.equal(shown.join(''), '페이지를 볼게요.\n'); // 도구 글은 조각으로 와도 화면에 안 나감
+  assert.equal(r.content, '페이지를 볼게요.');
+  assert.equal(r.toolCalls.length, 1); assert.equal(r.toolCalls[0].name, 'run_js');
+  assert.equal(JSON.parse(r.toolCalls[0].arguments).code, 'const s = await snapshot(page, { interactive: true });\nconsole.log(s.tree.slice(0, 3000));');
+  assert.equal(r.finishReason, 'tool_calls');
+  const j = parseTextToolCalls('<tool_call>{"name": "read_file", "arguments": {"path": "a.js", "start": 3}}</tool_call>');
+  assert.deepEqual(JSON.parse(j.toolCalls[0].arguments), { path: 'a.js', start: 3 });
+  const num = parseTextToolCalls('<function=read_file><parameter=path>a.js</parameter><parameter=start>10</parameter></function>');
+  assert.deepEqual(JSON.parse(num.toolCalls[0].arguments), { path: 'a.js', start: 10 }); // 숫자는 숫자로
+  assert.equal(parseTextToolCalls('그냥 답입니다. a < b 입니다.').toolCalls.length, 0);
+});
