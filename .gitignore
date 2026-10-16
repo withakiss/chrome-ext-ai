@@ -1,0 +1,7 @@
+node_modules/
+.env
+*.log
+temp/
+.superpowers/
+.DS_Store
+extension/models/

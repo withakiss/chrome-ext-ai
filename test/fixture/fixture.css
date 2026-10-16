@@ -1,0 +1,28 @@
+/* e2e 고정 페이지 공용 스타일(DESIGN.md 라이트·블루 토큰). 요소 이름·구조는 e2e가 찾으므로 바꾸지 않는다. */
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: #eef3fb; color: #1f2a44; font: 15px/1.6 Pretendard, "Apple SD Gothic Neo", system-ui, sans-serif; word-break: keep-all; }
+.top { display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: linear-gradient(135deg, #5b8def, #3a63d8); color: #fff; font-weight: 700; }
+.top .logo { width: 30px; height: 30px; border-radius: 999px; background: rgba(255,255,255,.22); display: grid; place-items: center; }
+.top .logo::before { content: ""; width: 12px; height: 12px; border-radius: 3px; background: #fff; transform: rotate(45deg); }
+main { max-width: 720px; margin: 0 auto; padding: 32px 20px 48px; display: flex; flex-direction: column; gap: 18px; }
+h1 { margin: 0; font-size: 28px; font-weight: 700; }
+.card { background: #fff; border-radius: 24px; box-shadow: 0 4px 16px rgba(47,91,214,.10); padding: 20px; }
+form { display: flex; gap: 8px; margin: 0; }
+input { flex: 1; min-width: 0; height: 46px; border: 0; border-radius: 999px; background: #f4f7fd; box-shadow: inset 0 0 0 1px #d6e0f2; padding: 0 18px; font: inherit; color: inherit; }
+input:focus { outline: 2px solid #4a7cf0; outline-offset: 1px; }
+button { height: 46px; padding: 0 22px; border: 0; border-radius: 999px; background: #3f6fe8; color: #fff; font: 700 14px/1 inherit; font-family: inherit; cursor: pointer; }
+button:hover { background: #3560d4; }
+#results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+#results:empty::before { content: "검색어를 입력하면 결과가 여기에 나옵니다."; color: #6b7690; font-size: 14px; }
+#results li { background: #fff; border-radius: 18px; padding: 14px 18px; box-shadow: inset 0 0 0 1px #d6e0f2; display: flex; flex-direction: column; gap: 2px; }
+#results a { color: #2f5bd6; font-weight: 700; text-decoration: none; } #results a:hover { text-decoration: underline; }
+#results span { color: #6b7690; font-size: 13px; }
+.muted { color: #6b7690; font-size: 13px; margin: 0; }
+.secure { display: flex; align-items: center; gap: 10px; }
+#banner { position: fixed; inset: 0; background: rgba(31,42,68,.35); display: grid; place-items: center; z-index: 9; }
+#banner > div { background: #fff; border-radius: 24px; padding: 20px 22px; width: min(320px, 90vw); box-shadow: 0 12px 32px rgba(31,42,68,.18); display: flex; align-items: center; gap: 12px; font-weight: 600; }
+#banner button { height: 38px; padding: 0 18px; margin-left: auto; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: 12px; font-weight: 600; color: #2f5bd6; background: #eaf0fc; border-radius: 999px; padding: 3px 10px; }
+.back { align-self: flex-start; display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1.5px #4a7cf0; color: #2f5bd6; font-weight: 700; text-decoration: none; }

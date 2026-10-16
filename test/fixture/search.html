@@ -1,0 +1,19 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>테스트 검색</title><link rel="stylesheet" href="fixture.css"></head>
+<body>
+<div id="banner"><div>쿠키 안내 <button onclick="document.getElementById('banner').remove()">동의</button></div></div>
+<header class="top"><span class="logo"></span>Test Portal</header>
+<main>
+<h1>테스트 검색</h1>
+<div class="card">
+<form onsubmit="event.preventDefault(); render(q.value)">
+  <input id="q" placeholder="검색어" autocomplete="off"><button type="submit">검색</button>
+</form>
+</div>
+<ul id="results"></ul>
+<div class="card secure"><form><input id="pw" type="password" value="secret123"></form><p class="muted">민감 입력 가림 확인용 필드</p></div>
+</main>
+<script>
+function render(q){ const ul=document.getElementById('results'); ul.innerHTML='';
+  for(let i=1;i<=5;i++){ const li=document.createElement('li'); li.innerHTML=`<a href="result-${i}.html">${q} 결과 ${i}</a> <span>설명 ${i}</span>`; ul.append(li);} }
+</script>
+</body></html>

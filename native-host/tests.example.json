@@ -1,0 +1,6 @@
+{
+  "templates": [
+    { "id": "unit", "label": "단위 테스트", "command": "npm.cmd", "args": ["test"] },
+    { "id": "lint", "label": "린트", "command": "npm.cmd", "args": ["run", "lint"] }
+  ]
+}
