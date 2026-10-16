@@ -1,4 +1,4 @@
-# chrome-ext-ai — 로컬 브라우저 에이전트 확장
+# chrome-ext-ai 로컬 LLM Agent를 이용한 크롬 확장프로그램
 
 크롬 옆 사이드 패널의 AI 비서. 지금 보는 페이지를 접근성 트리로 읽고 CDP로 클릭·입력하며, 연결한 프로젝트 소스를 읽어 파일·줄 근거와 함께 답하고, 고른 화면은 이미지까지 읽는다. 모델은 내부망 vLLM·Ollama·LM Studio(OpenAI 호환), Claude API, Chrome 내장 AI 중에서 고른다. 확장 폴더 하나로 동작하고 Node·데몬·CDN이 필요 없다(폐쇄망 대상).
 
